@@ -1,11 +1,9 @@
 'use strict';
 
-let currentScore = 0;
-let activePlayer = 0;
-
-let playing = true;
-
-const scores = [0, 0];
+let currentScore;
+let activePlayer;
+let playing;
+let scores;
 
 // Selecting elements
 const player0Element = document.querySelector('.player--0');
@@ -20,10 +18,6 @@ const diceElement = document.querySelector('.dice');
 const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
-
-score0Element.textContent = 0;
-score1Element.textContent = 0;
-diceElement.classList.add('hidden');
 
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -64,7 +58,7 @@ btnHold.addEventListener('click', function (e) {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
 
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= 100) {
       // finish game
       playing = false;
       diceElement.classList.add('hidden');
@@ -80,35 +74,25 @@ btnHold.addEventListener('click', function (e) {
   }
 });
 
-const resetScores = function () {
-  scores[0] = 0;
-  scores[1] = 0;
-  score0Element.textContent = '0';
-  score1Element.textContent = '0';
-
+const init = function () {
   currentScore = 0;
-  current0El.textContent = currentScore;
-  current1El.textContent = currentScore;
-};
+  activePlayer = 0;
+  playing = true;
+  scores = [0, 0];
 
-const setToDefaultStartPlayer = function () {
+  score0Element.textContent = 0;
+  score1Element.textContent = 0;
+  diceElement.classList.add('hidden');
+
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+
+  player0Element.classList.remove('player--winner');
+  player1Element.classList.remove('player--winner');
+
   player0Element.classList.add('player--active');
   player1Element.classList.remove('player--active');
 };
+init();
 
-btnNew.addEventListener('click', function () {
-  resetScores();
-  setToDefaultStartPlayer();
-  console.log(`Player: ${activePlayer}`);
-  if (!playing) {
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.remove('player--winner');
-    diceElement.classList.remove('hidden');
-
-    activePlayer = 0;
-    playing = !playing;
-  }
-});
-
-console.log(activePlayer);
+btnNew.addEventListener('click', init);
