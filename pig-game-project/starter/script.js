@@ -57,6 +57,7 @@ btnRoll.addEventListener('click', function () {
 });
 
 btnHold.addEventListener('click', function (e) {
+  console.log(`Player: ${activePlayer}`);
   if (playing) {
     scores[activePlayer] += currentScore;
 
@@ -78,3 +79,36 @@ btnHold.addEventListener('click', function (e) {
     }
   }
 });
+
+const resetScores = function () {
+  scores[0] = 0;
+  scores[1] = 0;
+  score0Element.textContent = '0';
+  score1Element.textContent = '0';
+
+  currentScore = 0;
+  current0El.textContent = currentScore;
+  current1El.textContent = currentScore;
+};
+
+const setToDefaultStartPlayer = function () {
+  player0Element.classList.add('player--active');
+  player1Element.classList.remove('player--active');
+};
+
+btnNew.addEventListener('click', function () {
+  resetScores();
+  setToDefaultStartPlayer();
+  console.log(`Player: ${activePlayer}`);
+  if (!playing) {
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.remove('player--winner');
+    diceElement.classList.remove('hidden');
+
+    activePlayer = 0;
+    playing = !playing;
+  }
+});
+
+console.log(activePlayer);
