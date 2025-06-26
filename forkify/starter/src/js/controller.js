@@ -2,8 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
-
-const recipeContainer = document.querySelector('.recipe');
+import searchView from './views/searchView.js';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -27,7 +26,16 @@ const controlRecipes = async function () {
   }
 };
 
-controlRecipes();
+const controlSearchResults = async function () {
+  try {
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    await model.loadSearchResults(query);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 // listening for hash change
 // window.addEventListener('hashchange', showRecipe);
@@ -36,6 +44,7 @@ controlRecipes();
 // instead of this above we can do this
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 
 init();
